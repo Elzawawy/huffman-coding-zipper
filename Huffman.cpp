@@ -112,10 +112,11 @@ void Huffman::readHeader(ifstream &inputStream) {
     while(character != '|'){
         if(character == ':')
         {
+            inputStream.get(character);
             while(character != ' ')
             {
-                inputStream.get(character);
                 codeMap[key] += character;
+                inputStream.get(character);
             }
         }
         else
@@ -134,24 +135,20 @@ Node* Huffman::buildDecodingTree(unordered_map<char, string> encodingMap) {
 
     for (const auto &item : encodingMap){
         previousNode=rootNode;
-
-
         Node*newNode=new Node(item.first);
-
         string characterCode=item.second;
-
         for (int i = 0; i < characterCode.size(); ++i) {
-            if(characterCode[i]=='0') {
+            if(characterCode[i]== '0') {
                 if (i == characterCode.size() - 1)
                     previousNode->setLeft(newNode);
-                else {
+                else  {
                     if (!previousNode->getLeft()) {
                         previousNode->setLeft(new Node('|'));
                         previousNode = previousNode->getLeft();
                     }
                     else previousNode = previousNode->getLeft();
                 }
-            } else{
+            } else {
                 if (i == characterCode.size() - 1)
                     previousNode->setRight(newNode);
                 else {
@@ -173,20 +170,21 @@ void Huffman::decompressToFile(string codeString, Node *rootNode,string decompre
     outputStream.open(decompressedFileName,ios::out);
     Node *traversingPointer=rootNode;
     //cout<<codeString;
+    for (int i = 0; i < codeString.size()+1; ++i){
+        if(codeString[i] == '0')
+            traversingPointer = traversingPointer->getLeft();
+        else
+            traversingPointer = traversingPointer->getRight();
 
-    for (int i = 0; i < codeString.size(); ++i){
-        cout<<traversingPointer->getCharacter()<<endl;
+        //cout<<traversingPointer->getCharacter()<<endl;
         if(traversingPointer->getCharacter()!='|') {
             outputStream << traversingPointer->getCharacter();
             traversingPointer=rootNode;
-        } else{
-            if(codeString[i] == 0)
-                traversingPointer = traversingPointer->getLeft();
-            else
-                traversingPointer = traversingPointer->getRight();
-
+//            if(codeString[i] == '0')
+//                traversingPointer = traversingPointer->getLeft();
+//            else
+//                traversingPointer = traversingPointer->getRight();
         }
-
     }
     outputStream.flush();
     outputStream.close();
