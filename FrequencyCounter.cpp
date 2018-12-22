@@ -6,11 +6,11 @@ void FrequencyCounter::readFile(string fileName) {
 
     inputFile.open(fileName, ios::in);
 
-    while(inputFile >> character)
+    while(inputFile.get(character))
         frequencyMap[character]++;
 
-    for (const auto &item : frequencyMap)
-        cout << item.first << item.second <<endl;
+//    for (const auto &item : frequencyMap)
+//        cout << item.first << item.second <<endl;
 
     inputFile.close();
 }

@@ -7,7 +7,7 @@
 
 
 class Node {
-    char charcter;
+    char character;
     int frequency;
 public:
     int getFrequency() const;
@@ -20,6 +20,12 @@ public:
     Node *getLeft() const;
 
     Node *getRight() const;
+
+    void setLeft(Node *left);
+
+    void setRight(Node *right);
+
+    char getCharacter() const;
 
 };
 

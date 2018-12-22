@@ -15,14 +15,17 @@ using namespace std;
 
 class Huffman {
 
-    void Huffer(unordered_map<char,int> frequencyMap);
-
+    unordered_map<char,string> codeMap;
+    void encodeCharacters(Node * rootNode, string codeString);
     class myCompartor{
     public :
         int operator() (Node* node1, Node* node2);
     };
+public :
+    void huffer(unordered_map<char, int> frequencyMap);
+    void compressTofile(string fileName);
 
-    priority_queue<Node*, vector<Node*>, myCompartor> minHeap;
+
 };
 
 
