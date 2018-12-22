@@ -19,14 +19,16 @@ class Huffman {
     void encodeCharacters(Node * rootNode, string codeString);
     void writeHeader(ofstream &outputStream);
     void readHeader(ifstream &inputStream);
+    Node* buildDecodingTree(unordered_map<char,string> encodingMap);
     class myCompartor{
     public :
         int operator() (Node* node1, Node* node2);
     };
 public :
     void huffer(unordered_map<char, int> frequencyMap);
-    void deHuffer(string fileName);
+    void deHuffer(string fileName,string decompressedFileName);
     void compressTofile(string fileName);
+    void decompressToFile(string codeString,Node *rootNode,string decompressedFileName);
 
 
 };

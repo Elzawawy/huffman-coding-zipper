@@ -16,6 +16,7 @@ private:
     Node * left, * right;
 public:
     Node(char character, int frequency);
+    Node(char character);
 
     Node *getLeft() const;
 

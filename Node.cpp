@@ -35,3 +35,9 @@ char Node::getCharacter() const {
 Node *Node::getRight() const {
     return right;
 }
+
+Node::Node(char character) {
+    this->character=character;
+    this->left = this->right = nullptr;
+
+}
