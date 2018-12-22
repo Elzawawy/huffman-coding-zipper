@@ -8,5 +8,10 @@ int main()
     frequencyCounter.readFile("../input.txt");
     huffman.huffer(frequencyCounter.getFrequencyMap());
     huffman.compressTofile("../output.txt");
+    huffman.deHuffer("../output.txt");
+    char a = -58;
+    bitset<8> x(a);
+    cout << x;
+
     return 0;
 }

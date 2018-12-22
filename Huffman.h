@@ -17,13 +17,15 @@ class Huffman {
 
     unordered_map<char,string> codeMap;
     void encodeCharacters(Node * rootNode, string codeString);
-    void writeHeader(ofstream outputStream);
+    void writeHeader(ofstream &outputStream);
+    void readHeader(ifstream &inputStream);
     class myCompartor{
     public :
         int operator() (Node* node1, Node* node2);
     };
 public :
     void huffer(unordered_map<char, int> frequencyMap);
+    void deHuffer(string fileName);
     void compressTofile(string fileName);
 
 

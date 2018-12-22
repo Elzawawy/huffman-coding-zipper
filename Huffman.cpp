@@ -53,6 +53,7 @@ void Huffman::compressTofile(string fileName) {
     ofstream outputStream;
     outputStream.open(fileName,ios::out);
     inputStream.open("../input.txt", ios::in);
+    writeHeader(outputStream);
     while(inputStream.get(character))
         file += codeMap[character];
     inputStream.close();
@@ -72,9 +73,45 @@ void Huffman::compressTofile(string fileName) {
     outputStream.close();
 }
 
-void Huffman::writeHeader(ofstream outputStream) {
-    outputStream << "H ";
+void Huffman::writeHeader(ofstream &outputStream) {
     for (const auto &item : codeMap)
-       outputStream << item.first << ":" << item.second << ",";
+       outputStream << item.first << ':' << item.second << ' ';
+    outputStream << '|';
+}
+
+void Huffman::deHuffer(string fileName) {
+    char character;
+    ifstream inputStream;
+    inputStream.open(fileName, ios::in);
+    readHeader(inputStream);
+    while(inputStream.get(character))
+    {
+
+    }
+
+
+}
+
+void Huffman::readHeader(ifstream &inputStream) {
+    codeMap.clear();
+    char character;
+    inputStream.get(character);
+    char key = character;
+    while(character != '|'){
+        if(character == ':')
+        {
+            while(character != ' ')
+            {
+                inputStream.get(character);
+                codeMap[key] += character;
+            }
+        }
+        else
+            key = character;
+        inputStream.get(character);
+    }
+
+        for (const auto &item : codeMap)
+        cout <<item.first <<item.second<<endl;
 }
 
