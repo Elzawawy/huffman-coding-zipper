@@ -17,6 +17,7 @@ class Huffman {
 
     unordered_map<char,string> codeMap;
     void encodeCharacters(Node * rootNode, string codeString);
+    void writeHeader(ofstream outputStream);
     class myCompartor{
     public :
         int operator() (Node* node1, Node* node2);

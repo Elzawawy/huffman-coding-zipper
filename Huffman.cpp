@@ -28,8 +28,8 @@ void Huffman::huffer(unordered_map<char, int> frequencyMap) {
     }
     encodeCharacters(HufferQueue.top(),tempString);
 
-    for (const auto &item : codeMap)
-        cout <<item.first <<item.second<<endl;
+//    for (const auto &item : codeMap)
+//        cout <<item.first <<item.second<<endl;
 
 }
 
@@ -46,11 +46,12 @@ void Huffman::encodeCharacters(Node *rootNode, string codeString) {
 }
 
 void Huffman::compressTofile(string fileName) {
+
     char character;
     string file;
     ifstream inputStream;
     ofstream outputStream;
-    outputStream.open(fileName,ios::in);
+    outputStream.open(fileName,ios::out);
     inputStream.open("../input.txt", ios::in);
     while(inputStream.get(character))
         file += codeMap[character];
@@ -59,14 +60,21 @@ void Huffman::compressTofile(string fileName) {
     stringstream stringStream(file);
     while(stringStream.good())
     {
+
         bitset<8> bits;
         stringStream >> bits;
         char c = char(bits.to_ulong());
         outputStream << c;
-        cout << c;
     }
 
 
     outputStream.flush();
     outputStream.close();
 }
+
+void Huffman::writeHeader(ofstream outputStream) {
+    outputStream << "H ";
+    for (const auto &item : codeMap)
+       outputStream << item.first << ":" << item.second << ",";
+}
+
