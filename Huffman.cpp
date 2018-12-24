@@ -3,6 +3,11 @@
 //
 
 #include "Huffman.h"
+#define INTERNAL_NODE_CHARACTER char(128)
+#define PSEUDO_EOF char(129)
+#define CHARACTER_CODE_SEPERATOR char(130)
+#define HEADER_ENTRY_SEPERATOR char(131)
+#define HEADER_TEXT_SEPERATOR char(132)
 
 int Huffman::myCompartor::operator()(Node *node1, Node *node2) {
     return node1->getFrequency() > node2->getFrequency();
@@ -14,14 +19,14 @@ void Huffman::huffer(unordered_map<char, int> frequencyMap) {
     Node * leftNode , * rightNode, * newNode;
     for (const auto &item : frequencyMap)
         HufferQueue.push(new Node(item.first,item.second));
-
+    HufferQueue.push(new Node(PSEUDO_EOF,1));
     while(HufferQueue.size() != 1)
     {
         leftNode = HufferQueue.top();
         HufferQueue.pop();
         rightNode = HufferQueue.top();
         HufferQueue.pop();
-        newNode = new Node('|',leftNode->getFrequency() + rightNode->getFrequency());
+        newNode = new Node(INTERNAL_NODE_CHARACTER,leftNode->getFrequency() + rightNode->getFrequency());
         HufferQueue.push(newNode);
         newNode->setLeft(leftNode);
         newNode->setRight(rightNode);
@@ -30,14 +35,13 @@ void Huffman::huffer(unordered_map<char, int> frequencyMap) {
 
 //    for (const auto &item : codeMap)
 //        cout <<item.first <<item.second<<endl;
-
 }
 
 void Huffman::encodeCharacters(Node *rootNode, string codeString) {
 
     if (!rootNode)
         return;
-    if (rootNode->getCharacter()!= '|'){
+    if (rootNode->getCharacter()!= INTERNAL_NODE_CHARACTER){
         codeMap[rootNode->getCharacter()] = codeString;
 
     }
@@ -57,21 +61,38 @@ void Huffman::compressTofile(string fileName) {
     while(inputStream.get(character))
         file += codeMap[character];
     inputStream.close();
+    file += codeMap[PSEUDO_EOF];
+//    cout<<PSEUDO_EOF<<endl;
+//    cout<<file<<endl;
 
+    unsigned long dividend = (file.size()-1) / 8 ;
+    unsigned long remainder = (file.size()-1) % 8 ;
+//    cout<<file.size()<<endl;
+    for (int i = 0; i < 8 - remainder; ++i)
+        file+='0';
     stringstream stringStream(file);
+//    cout<<stringStream.str()<<endl;
+   cout<<dividend<<endl;
+    int i=0;
 
-    while(stringStream.good())
+    while(!stringStream.eof())
     {
-
+        if(stringStream.fail())cout<<stringStream.fail();
+        if(stringStream.eof())cout<<stringStream.eof();
+        if(stringStream.bad())cout<<stringStream.bad();
         bitset<8> bits;
         stringStream >> bits;
-
-        if(bits==0)
-            break;
+//        if(bits==0)
+//            break;
         char c = char(bits.to_ulong());
-
         outputStream << c;
+        cout<<bits.to_string()<<endl;
+        i++;
+
+//        cout<< bits.to_string()<<endl;
     }
+    cout<<i;
+
 
 
     outputStream.flush();
@@ -80,8 +101,8 @@ void Huffman::compressTofile(string fileName) {
 
 void Huffman::writeHeader(ofstream &outputStream) {
     for (const auto &item : codeMap)
-       outputStream << item.first << ':' << item.second << ' ';
-    outputStream << '|';
+       outputStream << item.first << CHARACTER_CODE_SEPERATOR << item.second << HEADER_ENTRY_SEPERATOR;
+    outputStream << HEADER_TEXT_SEPERATOR;
 }
 
 void Huffman::deHuffer(string compressedFileName,string decompressedFileName) {
@@ -93,7 +114,7 @@ void Huffman::deHuffer(string compressedFileName,string decompressedFileName) {
     while(inputStream.get(character))
     {
         bitset<8> bits(character);
-        cout<<bits.to_ulong()<<endl;
+        //cout<<bits.to_ulong()<<endl;
         codeString+=bits.to_string();
 
 
@@ -109,11 +130,11 @@ void Huffman::readHeader(ifstream &inputStream) {
     char character;
     inputStream.get(character);
     char key = character;
-    while(character != '|'){
-        if(character == ':')
+    while(character != HEADER_TEXT_SEPERATOR){
+        if(character == CHARACTER_CODE_SEPERATOR)
         {
             inputStream.get(character);
-            while(character != ' ')
+            while(character != HEADER_ENTRY_SEPERATOR)
             {
                 codeMap[key] += character;
                 inputStream.get(character);
@@ -124,13 +145,13 @@ void Huffman::readHeader(ifstream &inputStream) {
         inputStream.get(character);
     }
 
-        for (const auto &item : codeMap)
-        cout <<item.first <<item.second<<endl;
+//        for (const auto &item : codeMap)
+//        cout <<item.first <<item.second<<endl;
 }
 
 Node* Huffman::buildDecodingTree(unordered_map<char, string> encodingMap) {
 
-    Node* rootNode=new Node('|');
+    Node* rootNode=new Node(INTERNAL_NODE_CHARACTER);
     Node* previousNode;
 
     for (const auto &item : encodingMap){
@@ -143,7 +164,7 @@ Node* Huffman::buildDecodingTree(unordered_map<char, string> encodingMap) {
                     previousNode->setLeft(newNode);
                 else  {
                     if (!previousNode->getLeft()) {
-                        previousNode->setLeft(new Node('|'));
+                        previousNode->setLeft(new Node(INTERNAL_NODE_CHARACTER));
                         previousNode = previousNode->getLeft();
                     }
                     else previousNode = previousNode->getLeft();
@@ -153,7 +174,7 @@ Node* Huffman::buildDecodingTree(unordered_map<char, string> encodingMap) {
                     previousNode->setRight(newNode);
                 else {
                     if (!previousNode->getRight()) {
-                        previousNode->setRight(new Node('|'));
+                        previousNode->setRight(new Node(INTERNAL_NODE_CHARACTER));
                         previousNode = previousNode->getRight();
                     }
                     else previousNode = previousNode->getRight();
@@ -169,7 +190,8 @@ void Huffman::decompressToFile(string codeString, Node *rootNode,string decompre
     ofstream outputStream;
     outputStream.open(decompressedFileName,ios::out);
     Node *traversingPointer=rootNode;
-    //cout<<codeString;
+//    cout<<codeString;
+
     for (int i = 0; i < codeString.size()+1; ++i){
         if(codeString[i] == '0')
             traversingPointer = traversingPointer->getLeft();
@@ -177,7 +199,10 @@ void Huffman::decompressToFile(string codeString, Node *rootNode,string decompre
             traversingPointer = traversingPointer->getRight();
 
         //cout<<traversingPointer->getCharacter()<<endl;
-        if(traversingPointer->getCharacter()!='|') {
+        if(traversingPointer->getCharacter()!= INTERNAL_NODE_CHARACTER) {
+            if(traversingPointer->getCharacter() == PSEUDO_EOF)
+                break;
+
             outputStream << traversingPointer->getCharacter();
             traversingPointer=rootNode;
 //            if(codeString[i] == '0')
