@@ -10,4 +10,4 @@ add_executable(HuffmanCoding
         FrequencyCounter.h
         main.cpp
         Node.cpp Node.h
-        Huffman.cpp Huffman.h)
+        Huffman.cpp Huffman.h HuffmanUtility.cpp HuffmanUtility.h)
