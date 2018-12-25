@@ -27,7 +27,7 @@ class Huffman {
 public :
     void huffer(unordered_map<char, int> frequencyMap);
     void deHuffer(string fileName,string decompressedFileName);
-    void compressTofile(string fileName);
+    void compressTofile(string InputfileName ,string OutputfileName);
     void decompressToFile(string codeString,Node *rootNode,string decompressedFileName);
 
 

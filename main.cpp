@@ -5,11 +5,16 @@ int main()
 {
     FrequencyCounter frequencyCounter ;
     Huffman huffman;
-    frequencyCounter.readFile("../input.txt");
-    huffman.huffer(frequencyCounter.getFrequencyMap());
-    huffman.compressTofile("../output.txt");
-    huffman.deHuffer("../output.txt","../output2.txt");
-
+    string workingMode;
+    cin >> workingMode;
+    if(workingMode == "compress")
+    {
+        frequencyCounter.readFile("../input.txt");
+        huffman.huffer(frequencyCounter.getFrequencyMap());
+        huffman.compressTofile("../input.txt","../output.txt");
+    }
+    else if(workingMode == "decompress")
+        huffman.deHuffer("../output.txt","../output2.txt");
 
     return 0;
 }

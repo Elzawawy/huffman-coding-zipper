@@ -46,14 +46,14 @@ void Huffman::encodeCharacters(Node *rootNode, string codeString) {
     encodeCharacters(rootNode->getRight(), codeString + "1");
 }
 
-void Huffman::compressTofile(string fileName) {
+void Huffman::compressTofile(string InputfileName ,string OutputfileName) {
 
     char character;
     string file;
     ifstream inputStream;
     ofstream outputStream;
-    outputStream.open(fileName, ios::out);
-    inputStream.open("../input.txt", ios::in);
+    outputStream.open(OutputfileName, ios::out);
+    inputStream.open(InputfileName, ios::in);
     writeHeader(outputStream);
     while (inputStream.get(character))
         file += codeMap[character];
