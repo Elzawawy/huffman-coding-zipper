@@ -15,7 +15,7 @@ int Huffman::myCompartor::operator()(Node *node1, Node *node2) {
 }
 
 void Huffman::huffer(unordered_map<char, int> frequencyMap) {
-    priority_queue<Node *, vector<Node *>, myCompartor> HufferQueue;
+    priority_queue <Node *, vector<Node *>, myCompartor> HufferQueue;
     string tempString;
     Node *leftNode, *rightNode, *newNode;
     for (const auto &item : frequencyMap)

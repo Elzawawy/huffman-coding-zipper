@@ -18,6 +18,7 @@ int main()
         cout <<"Time taken: "<<(1.0*(clock() - tStart)/CLOCKS_PER_SEC)<<"sec"<<endl;
         cout << "Input File Size : "<<filesize("../input.txt")<<" bytes."<<endl;
         cout<< "Compressed File Size : "<<filesize("../output.txt")<<" bytes."<<endl;
+        cout<< "Compression Ratio : "<<(1.0*filesize("../output.txt")/filesize("../input.txt"))<<endl;
     }
     else if(workingMode == "decompress")
     {
