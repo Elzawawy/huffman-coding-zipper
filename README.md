@@ -26,6 +26,8 @@ Repeat this step until there is only one tree.
 
 3. The single tree left after the previous step is an optimal encoding tree.
 
+<p align='center'><img src='https://upload.wikimedia.org/wikipedia/commons/d/d8/HuffmanCodeAlg.png'/></p>
+
 ---
 
 ## Our Implemetation of Algorithm
@@ -62,6 +64,15 @@ Our decompressing/un-huff program must have some mechanism to account for these 
 So, we check if the size of the bits string is multiple of 8 or not by checking the modulo of 8. Using that modulo value we can calculate the number of bits that need to be padded and handle them correctly. 
 
 Finally, we added a **pseudo EOF character**, and we chose it out of the ASCII table in the human readable range so we are not limiting the user to not use any ASCII characters.
+
+
+## References
+
+*1. [Huffman coding, from WikiWorld](https://www.wikiwand.com/en/Huffman_coding)*
+
+*2. Thomas H. Cormen, Charles E. Leiserson, Ronald L.Rivest, Clifford Stein “Introduction to Algorithms 3rd Edition - Thomas H. Cormen, Charles E. Leiserson, R”*
+
+*3. Weiss, Mark Allen. “Data structures and algorithm analysis in Java." Addison-Wesley Long-man Publishing Co., Inc., 1998.*
 
 ---
 
