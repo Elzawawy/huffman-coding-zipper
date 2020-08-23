@@ -1,6 +1,8 @@
 <h1 align='center'> Huffman Zipper</h1>
-<h3 align='center'> Yet another file compressor/decompressor, using a C++ huffman-coding algorithm implementation.</h3>
+<h4 align='center'> Yet another file compressor/decompressor, using a C++ huffman-coding algorithm implementation.</h3>
 <img center='align' src='https://cdn.shortpixel.ai/client/q_glossy,ret_img,w_1550/https://itpack.be/wp-content/uploads/2019/06/Naamloos.png'/>
+
+<h4 align='center'> This team project was developed as assignment for Analysis & Design of Algorithms Course Fall 2018 offering at CCE department, Faculty of Engineering, Alexandria University</h3>
 
 We use **Huffman's algorithm** to construct **a tree** that is used for data compression. 
 We assume that each character has an associated weight equal to the number of times the character occurs in a file,
@@ -22,6 +24,8 @@ Repeat this step until there is only one tree.
 2. Choose two trees with the smallest weights, call these trees T1 and T2. Create a new tree whose root has a weight equal to the sum of the weights T1 + T2 and whose left subtree is T1 and whose right subtree is T2.
 
 3. The single tree left after the previous step is an optimal encoding tree.
+
+---
 
 ## Our Implemetation of Algorithm
 
@@ -57,5 +61,7 @@ Our decompressing/un-huff program must have some mechanism to account for these 
 So, we check if the size of the bits string is multiple of 8 or not by checking the modulo of 8. Using that modulo value we can calculate the number of bits that need to be padded and handle them correctly. 
 
 Finally, we added a **pseudo EOF character**, and we chose it out of the ASCII table in the human readable range so we are not limiting the user to not use any ASCII characters.
+
+---
 
 <h3 align='center'> Made with :heart:</h3>
